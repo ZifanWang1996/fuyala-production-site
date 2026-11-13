@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#263f39">
+  <meta name="description" content="走进福呀啦的山有愿，在山林庭院里祈愿、听钟、观鱼，留一段自在时光。">
+  <title>福呀啦 FuYaLa · 山有愿 | 山林祈愿与放松游戏</title>
+  <link rel="canonical" href="https://fuyala.com/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="福呀啦 · 山有愿">
+  <meta property="og:description" content="在山林庭院中祈愿、求签、喂鱼与静心，留一段自在时光。">
+  <meta property="og:url" content="https://fuyala.com/">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"福呀啦 · 山有愿","url":"https://fuyala.com/","applicationCategory":"GameApplication","operatingSystem":"Web","inLanguage":["zh-CN","zh-TW","en","ja","ko"],"description":"在浏览器中漫游原创山林庭院，体验祈愿、求签、喂鱼与静心。"}</script>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main id="game" aria-label="福呀啦游戏">
+    <div id="scene" aria-label="可探索的山林庭院"></div>
+    <div class="scene-shade" aria-hidden="true"></div>
+    <div id="world-hotspots" class="world-hotspots" aria-label="附近可互动地点"></div>
+
+    <header class="topbar">
+      <div class="brand"><span class="brand-seal">福</span><span><strong>福呀啦</strong><small>山有愿 · 福自来</small></span></div>
+      <div class="top-actions">
+        <button class="icon-button" id="collection-toggle" title="收藏簿" aria-label="收藏簿">▣</button>
+        <button class="icon-button" id="settings-toggle" title="个人设置" aria-label="个人设置">⚙</button>
+        <button class="icon-button" id="time-toggle" title="切换日夜" aria-label="切换日夜">☾</button>
+        <button class="icon-button" id="sound-toggle" title="切换环境与互动声音" aria-label="切换环境与互动声音">♫</button>
+        <button class="icon-button" id="overview-toggle" title="切换俯瞰" aria-label="切换俯瞰">◇</button>
+        <button class="icon-button" id="photo-button" title="拍照" aria-label="拍照">◎</button>
+      </div>
+    </header>
+    <div class="location"><span class="location-dot"></span><span id="location-name">山门前</span><span class="location-divider"></span><span>此刻宜慢行</span></div>
+    <nav class="desktop-categories" aria-label="游览分类"><button data-category="0">祈愿</button><button data-category="1">殿宇</button><button data-category="2">体验</button><button data-category="3">闲游</button></nav>
+    <button id="map-toggle" class="map-preview" aria-label="打开庭院地图"><span class="map-north">北</span><span class="map-route"></span><span class="map-player">▲</span><span class="map-label">山居地图 ↗</span></button>
+
+    <div class="bottom-controls">
+      <div class="control-side"><button id="menu-toggle" class="round-button" aria-label="打开游览菜单"><span class="round-icon">✣</span><span>游览</span></button></div>
+      <div id="joystick" class="joystick" aria-label="拖动摇杆移动角色"><div class="joystick-ring"></div><div id="joystick-knob" class="joystick-knob"></div></div>
+      <div class="control-side right"><button id="emote-toggle" class="round-button" aria-label="打开动作菜单"><span class="round-icon">✳</span><span>动作</span></button></div>
+    </div>
+    <div class="desktop-hint">W A S D 移动 <i></i> 拖动视角 <i></i> 点击目的地前往</div>
+    <button id="interact" class="interact-button" hidden>互动</button>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <section id="action-menu" class="action-menu" aria-label="游览菜单" hidden>
+      <div class="panel-heading"><div><span class="eyebrow">EXPLORE THE GARDEN</span><h2>去山中走走</h2><p>选一个去处，沿着石路慢慢走。</p></div><button class="close-button" id="menu-close" aria-label="关闭游览菜单">×</button></div>
+      <div class="menu-scroll">
+        <div class="menu-section"><div class="section-label"><span>01</span> 祈愿 <i></i></div><div class="action-grid"><button data-action="incense"><span>♧</span>敬香</button><button data-action="wish"><span>✧</span>心愿树</button><button data-action="fortune"><span>⌁</span>抽签</button><button data-action="oracle"><span>☷</span>自我反思</button><button data-action="tarot"><span>☼</span>星象牌</button><button data-action="zodiac"><span>✦</span>生肖心笺</button></div></div>
+        <div class="menu-section"><div class="section-label"><span>02</span> 殿宇 <i></i></div><div class="action-grid"><button data-action="main-hall"><span>⌂</span>清和殿</button><button data-action="wisdom"><span>⌂</span>听雨阁</button><button data-action="blessing"><span>⌂</span>福缘殿</button><button data-action="moon"><span>⌂</span>月华堂</button><button data-action="breeze"><span>⌂</span>清风殿</button><button data-action="joy"><span>⌂</span>长乐殿</button><button data-action="cloud"><span>⌂</span>望云殿</button></div></div>
+        <div class="menu-section"><div class="section-label"><span>03</span> 体验 <i></i></div><div class="action-grid"><button data-action="alchemy"><span>♨</span>炼丹</button><button data-action="woodfish"><span>◉</span>木鱼</button><button data-action="bell"><span>♧</span>鸣钟</button><button data-action="drum"><span>⊙</span>敲鼓</button><button data-action="exercise"><span>✣</span>舒展</button><button data-action="meditation"><span>✧</span>山间静心</button><button data-action="dance"><span>♫</span>云间乐台</button><button data-action="release"><span>✦</span>打小人 · 烦恼退散</button></div></div>
+        <div class="menu-section"><div class="section-label"><span>04</span> 闲游 <i></i></div><div class="action-grid"><button data-action="reading"><span>▤</span>藏书阁</button><button data-action="tea"><span>♨</span>一杯茶</button><button data-action="fish"><span>≈</span>喂鱼</button><button data-action="rest"><span>⌁</span>休息</button><button data-action="monk"><span>☘</span>山居人</button><button data-action="cat"><span>✿</span>摸猫</button></div></div>
+      </div>
+    </section>
+    <div id="emote-menu" class="emote-menu" hidden><button data-emote="wave">挥手</button><button data-emote="bow">作揖</button><button data-emote="hug">拥抱</button><button data-emote="heart">比心</button></div>
+
+    <section id="map-panel" class="map-panel" aria-label="山居地图" hidden>
+      <div class="panel-heading"><div><span class="eyebrow">A WALK IN THE HILLS</span><h2>山居地图</h2><p>在这里，随心走走。</p></div><button id="map-close" class="close-button" aria-label="关闭地图">×</button></div>
+      <div id="map-viewport" class="map-art" tabindex="0" aria-label="庭院地点分布图，使用方向键移动，加减键缩放"><div id="map-canvas" class="map-canvas">
+        <span class="map-compass">北 ↑</span>
+        <button type="button" class="map-building map-hall" data-map-action="main-hall">清和殿</button>
+        <button type="button" class="map-building map-blessing" data-map-action="blessing">福缘殿</button>
+        <button type="button" class="map-building map-moon" data-map-action="moon">月华堂</button><button type="button" class="map-building map-breeze" data-map-action="breeze">清风殿</button><button type="button" class="map-building map-joy" data-map-action="joy">长乐殿</button><button type="button" class="map-building map-cloud" data-map-action="cloud">望云殿</button>
+        <button type="button" class="map-building map-reading" data-map-action="reading">听雨阁</button>
+        <button type="button" class="map-building map-alchemy" data-map-action="alchemy">丹香房</button>
+        <button type="button" class="map-building map-bell" data-map-action="bell">钟亭</button>
+        <button type="button" class="map-building map-practice" data-map-action="exercise">观云亭</button>
+        <span class="map-building map-gate">山门</span>
+        <button type="button" class="map-release" data-map-action="release">打小人</button>
+        <button type="button" class="map-dance" data-map-action="dance">乐台</button>
+        <button type="button" class="map-plaza" data-map-action="incense">香庭</button>
+        <button type="button" class="map-lake" data-map-action="fish">锦鲤池</button>
+        <button type="button" class="map-tree" data-map-action="wish">心愿树</button><button type="button" class="map-tea" data-map-action="tea">茶摊</button>
+        <span id="world-map-player" class="world-map-player" title="你的位置" aria-label="你的位置">▲</span>
+      </div></div>
+      <div class="map-tools"><button type="button" id="map-zoom-out" aria-label="缩小地图">−</button><span id="map-zoom-label" aria-live="polite">100%</span><button type="button" id="map-zoom-in" aria-label="放大地图">＋</button><button type="button" id="map-center">定位自己</button><button type="button" id="map-reset">复位</button></div>
+      <p class="map-caption">点地点前往；拖动地图，滚轮或双指缩放。</p>
+    </section>
+
+    <div id="modal" class="overlay" hidden>
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button id="modal-close" class="close-button dialog-close" aria-label="关闭">×</button>
+        <div class="dialog-mark">福呀啦 · 山有愿</div>
+        <h2 id="modal-title"></h2><div id="modal-body"></div>
+      </section>
+    </div>
+
+    <section id="welcome" class="welcome" aria-label="进入福呀啦">
+      <div class="welcome-card">
+        <div class="welcome-top"><span class="welcome-seal">福</span><span class="welcome-kicker">FUYALA · A PLACE FOR WISHES</span></div>
+        <div class="welcome-copy"><div class="welcome-overline"><span></span> 给自己一段山中时光</div><h1>福呀<span>啦</span></h1><p>山有愿，福自来。<br>在这里，把日子过得松一点。</p></div>
+        <div class="welcome-form">
+          <div class="form-row"><div><span class="field-title">选个模样</span><small>左右滑动查看更多</small></div><div id="avatar-options" class="avatar-options" aria-label="形象选择，左右滑动查看更多"><button type="button" class="avatar-choice rose selected" data-avatar="rose" aria-label="粉衣花饰" aria-pressed="true"><span>●</span></button><button type="button" class="avatar-choice sage" data-avatar="sage" aria-label="青衣兔耳" aria-pressed="false"><span>●</span></button><button type="button" class="avatar-choice amber" data-avatar="amber" aria-label="杏衣熊帽" aria-pressed="false"><span>●</span></button><button type="button" class="avatar-choice plum" data-avatar="plum" aria-label="紫衣花饰" aria-pressed="false"><span>●</span></button><button type="button" class="avatar-choice sky" data-avatar="sky" aria-label="蓝衣兔耳" aria-pressed="false"><span>●</span></button><button type="button" class="avatar-choice ink" data-avatar="ink" aria-label="黛衣熊帽" aria-pressed="false"><span>●</span></button><button type="button" class="avatar-choice mint" data-avatar="mint" aria-label="绿衣花饰" aria-pressed="false"><span>●</span></button><button type="button" class="avatar-choice cloud" data-avatar="cloud" aria-label="云灰熊帽" aria-pressed="false"><span>●</span></button></div></div>
+          <label class="field-title" for="language-select">界面语言</label><select id="language-select" class="language-select" aria-describedby="language-note"><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option></select><small id="language-note" class="language-note">活动内容暂为简体中文</small><label class="field-title" for="name-input">怎么称呼你</label><div class="name-field"><input id="name-input" type="text" maxlength="12" value="山间旅人" autocomplete="off"><button type="button" id="random-name" class="random-name" aria-label="随机生成名字">换一个 ✦</button></div>
+          <button id="enter-game" class="primary-button">进入山居 <span>↗</span></button>
+          <p class="welcome-foot">无需匆忙，愿你在这里找到片刻自在。 <a href="/about">玩法与隐私</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./main.js"></script>
+  <script type="module" src="./analytics-ui.mjs"></script>
+</body>
+</html>
